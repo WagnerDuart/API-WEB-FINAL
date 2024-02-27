@@ -3,11 +3,10 @@ const fs = require("fs");
 
 exports.create = async (req, res) =>{
     try {
-        const {name,  image_src,  training, description, social_media} = req.body;
+        const {name,  training, description, social_media} = req.body;
 
         const employee = new Employee({
             name,
-            image_src,
             training,
             description,
             social_media,
@@ -60,55 +59,27 @@ exports.findAll = async (req, res) => {
   exports.update = async (req, res) => {
     try {
         const { name, training, description, social_media } = req.body;
-        const file = req.file;
 
         const employee = await Employee.findById(req.params.id);
         if (!employee) {
             return res.status(404).send({ msg: 'Funcionário não encontrado.' });
         }
 
-        // Se houver uma imagem antiga, remova-a
-        if (employee.image_src) {
-            fs.unlink(employee.image_src, async (err) => {
-                if (err) {
-                    console.error(err);
-                    return res.status(500).send({ msg: 'Erro ao remover a imagem antiga.' });
-                }
-                // Se a remoção for bem-sucedida, continue com a atualização do funcionário
-                try {
-                    // Atualize os dados do funcionário
-                    employee.name = name;
-                    employee.image_src = file.path;
-                    employee.training = training;
-                    employee.description = description;
-                    employee.social_media = social_media;
+        
+        try {
+           // Atualize os dados do funcionário
+            employee.name = name;
+            employee.training = training;
+            employee.description = description;
+            employee.social_media = social_media;
 
-                    // Salve as alterações
-                    await employee.save();
+            // Salve as alterações
+            await employee.save();
 
-                    return res.send({ msg: 'Funcionário atualizado com sucesso.', employee });
-                } catch (error) {
-                    console.error(error);
-                    return res.status(500).send({ msg: 'Erro ao atualizar o funcionário.' });
-                }
-            });
-        } else {
-            // Se não houver imagem antiga, continue com a atualização do funcionário diretamente
-            try {
-                // Atualize os dados do funcionário
-                employee.name = name;
-                employee.image_src = file.path;
-                employee.training = training;
-                employee.description = description;
-                employee.social_media = social_media;
-
-                // Salve as alterações
-                await employee.save();
-
-                return res.send({ msg: 'Funcionário atualizado com sucesso.', employee });
-            } catch (error) {
-                console.error(error);
-                return res.status(500).send({ msg: 'Erro ao atualizar o funcionário.' });
+            return res.send({ msg: 'Funcionário atualizado com sucesso.', employee });
+        } catch (error) {
+            console.error(error);
+            return res.status(500).send({ msg: 'Erro ao atualizar o funcionário.' });
             }
         }
     } catch (error) {
