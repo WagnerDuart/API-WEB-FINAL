@@ -1,86 +1,83 @@
 const Employee = require("../models/Employee")
-const fs = require("fs");
 
-exports.create = async (req, res) =>{
+
+exports.create = async (req, res) => {
     try {
-        const {name,  training, description, social_media} = req.body;
+        const { nome, treinamento, descricao, redes_sociais } = req.body;
 
-        const employee = new Employee({
-            name,
-            training,
-            description,
-            social_media,
-        })
-        await employee.save();
+        const funcionario = new Employee({
+            nome,
+            treinamento,
+            descricao,
+            redes_sociais,
+        });
 
-        res.json({employee, msg:"funcionário salvo com sucesso"})
+        await funcionario.save();
+
+        res.json({ funcionario, msg: "Funcionário salvo com sucesso" });
     } catch (error) {
-        res.status(500).json({msg: "Error ao salva funcionário"})
+        res.status(500).json({ msg: "Erro ao salvar funcionário" });
     }
 };
 
 exports.remove = async (req, res) => {
     try {
-        
-        const employee = await Employee.findByIdAndDelete(req.params.id);
+        const funcionario = await Employee.findByIdAndDelete(req.params.id);
 
-        if (!employee){
-            return res.status(404).json({msg: "funcionário não encontrado"})
+        if (!funcionario) {
+            return res.status(404).json({ msg: "Funcionário não encontrado" });
         }
 
-        fs.unlinkSync(employee.image_src);
-
-        res.json({msg: "funcionário removido com sucesso!"})
-
+        res.json({ msg: "Funcionário removido com sucesso!" });
     } catch (error) {
-        res.status(500).json({msg: "Erro ao excluir funcionário"});
+        res.status(500).json({ msg: "Erro ao excluir funcionário" });
     }
-}
+};
+
+
 exports.findAll = async (req, res) => {
     try {
-      const { id } = req.params;
-  
-      if (id) {
-        const employee = await Employee.findById(id);
-        if (!employee) {
-          return res.status(404).send({ msg: 'Funcionário não encontrado.' });
+        const { id } = req.params;
+
+        if (id) {
+            const funcionario = await Employee.findById(id);
+            if (!funcionario) {
+                return res.status(404).send({ msg: 'Funcionário não encontrado.' });
+            }
+            return res.send(funcionario);
+        } else {
+            const funcionarios = await Employee.find();
+            return res.send(funcionarios);
         }
-        return res.send(employee);
-      } else {
-        const employees = await Employee.find();
-        return res.send(employees);
-      }
     } catch (error) {
-      console.error(error);
-      return res.status(500).send({ msg: 'Erro ao buscar funcionário(s).' });
+        console.error(error);
+        return res.status(500).send({ msg: 'Erro ao buscar funcionário(s).' });
     }
-  };
+};
 
-  exports.update = async (req, res) => {
+exports.update = async (req, res) => {
     try {
-        const { name, training, description, social_media } = req.body;
+        const { nome, treinamento, descricao, redes_sociais } = req.body;
 
-        const employee = await Employee.findById(req.params.id);
-        if (!employee) {
+        const funcionario = await Employee.findById(req.params.id);
+        if (!funcionario) {
             return res.status(404).send({ msg: 'Funcionário não encontrado.' });
         }
 
-        
         try {
-           // Atualize os dados do funcionário
-            employee.name = name;
-            employee.training = training;
-            employee.description = description;
-            employee.social_media = social_media;
+            // Atualize os dados do funcionário
+            funcionario.nome = nome;
+            funcionario.treinamento = treinamento;
+            funcionario.descricao = descricao;
+            funcionario.redes_sociais = redes_sociais;
 
             // Salve as alterações
-            await employee.save();
+            await funcionario.save();
 
-            return res.send({ msg: 'Funcionário atualizado com sucesso.', employee });
+            return res.send({ msg: 'Funcionário atualizado com sucesso.', funcionario });
         } catch (error) {
             console.error(error);
             return res.status(500).send({ msg: 'Erro ao atualizar o funcionário.' });
-            }
         }
     } catch (error) {
         console.error(error);
