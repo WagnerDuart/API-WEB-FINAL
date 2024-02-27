@@ -3,9 +3,7 @@ const fs = require("fs");
 
 exports.create = async (req, res) =>{
     try {
-        const {name, training, description, social_media} = req.body;
-
-        const file = req.file
+        const {name,  image_src,  training, description, social_media} = req.body;
 
         const employee = new Employee({
             name,
