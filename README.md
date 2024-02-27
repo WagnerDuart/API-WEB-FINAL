@@ -29,23 +29,112 @@ A API permite que a proprietária realize operações de criar um novo profissio
 ## **OBS:**
 A conexão com o banco de dados pode apresentar lentidão. Caso a conexão falhe, tente novamente em seguida ou aguarde alguns segundos. É normal que na primeira vez os dados demorem para serem carregados!
 
-* GET
-Descrição: 
+* GET (Visualizar)
+Descrição: Visualizar os profissionais
 Resposta:
+~~~
+[
+	{
+		"_id": "65dd32300a52e3d08e1d355c",
+		"name": "Edilane Aguilar ",
+		"__v": 0,
+		"description": "Responsável por produzir sobrancelhas  perfeitas e por dar seu nome quando o assunto é limpeza de pele.",
+		"social_media": "dih_designersobrancelhas",
+		"training": "Designer de sobrancelhas e expert em cuidados faciais"
+	},
+	{
+		"_id": "65dd384cf9e41b40f37bac5c",
+		"name": "carlos",
+		"image_src": "C:\\Users\\Wagner\\Documents\\Projeto Final WEB 2024\\API WEB FINAL\\uploads\\314400b181ac5317c5a1946ee6cc2260-Captura de Tela (9).png",
+		"training": "oiiii",
+		"description": "kljhalksjklds",
+		"social_media": "face",
+		"__v": 0
+	},
+	{
+		"_id": "65dd3aef4860634e7ade9ee0",
+		"name": "Livia Batista ",
+		"training": "Nail designer/manicure",
+		"description": "Produz unhas incríveis e oferece serviços de SPA",
+		"social_media": "Livia.batista_unhas",
+		"__v": 0
+	},
+	{
+		"_id": "65dd3b774860634e7ade9ee2",
+		"name": "Herika Darling ",
+		"training": "Idealizadora e designer de sobrancelhas",
+		"description": "Referência em micropigmentação e sobrancelhas no Vale do Jequitinhonha",
+		"social_media": "herikadarling.pmu",
+		"__v": 0
+	},
+	{
+		"_id": "65dd3bb84860634e7ade9ee5",
+		"name": "gfhgfdhgf",
+		"training": "cabelo",
+		"description": "jjjjjjjjj",
+		"social_media": "hghgf",
+		"__v": 0
+	}
+]
+~~~
 
+* POST(Criar)
+Descrição: Cria profissional
+Entrada:
+~~~
+{
+	 "name": "Livia Batista ",
+   "training": "Nail designer/manicure",
+   "description":"Produz unhas incríveis e oferece serviços de SPA",
+   "social_media": "Livia.batista_unhas"
+}
+~~~
+Saída:
+~~~
+{
+	"employee": {
+		"name": "Livia Batista ",
+		"training": "Nail designer/manicure",
+		"description": "Produz unhas incríveis e oferece serviços de SPA",
+		"social_media": "Livia.batista_unhas",
+		"_id": "65dd3aef4860634e7ade9ee0",
+		"__v": 0
+	},
+	"msg": "Funcionário salvo com sucesso"
+}
+~~~
 
-* POST
+* PUT (atualizar) 
+Descrição: Atualiza profissional
+Entrada:
+~~~
+{
+   "social_media": "dih_designersobrancelhas"
+}
+~~~
+Saída:
+~~~
+{
+	"msg": "Funcionário atualizado com sucesso.",
+	"employee": {
+		"_id": "65dd32300a52e3d08e1d355c",
+		"name": "Edilane Aguilar ",
+		"__v": 0,
+		"description": "Responsável por produzir sobrancelhas  perfeitas e por dar seu nome quando o assunto é limpeza de pele.",
+		"social_media": "dih_designersobrancelhas",
+		"training": "Designer de sobrancelhas e expert em cuidados faciais"
+	}
+}
+~~~
+
+* DELETE (deletar)
 Descrição:
-Resposta:
-
-* UP
-Descrição:
-Resposta:
-
-
-* DELETE
-Descrição:
-Resposta:
+Saída:
+~~~
+{
+	"msg": "Funcionário removido com sucesso!"
+}
+~~~
 
 ## Créditos
 - [Documentação Mongoose](https://mongoosejs.com/docs/guide.html)
