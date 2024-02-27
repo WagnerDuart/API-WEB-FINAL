@@ -6,6 +6,7 @@ exports.create = async (req, res) => {
 
         const employee = new Employee({
             name,
+            midia,
             training,
             description,
             social_media,
@@ -55,7 +56,7 @@ exports.findAll = async (req, res) => {
 
 exports.update = async (req, res) => {
     try {
-        const { name, training, description, social_media } = req.body;
+        const { name, midia, training, description, social_media } = req.body;
 
         const employee = await Employee.findById(req.params.id);
         if (!employee) {
@@ -65,6 +66,7 @@ exports.update = async (req, res) => {
         try {
             // Atualize os dados do funcionário
             employee.name = name;
+            employee.midia = midia;
             employee.training = training;
             employee.description = description;
             employee.social_media = social_media;
