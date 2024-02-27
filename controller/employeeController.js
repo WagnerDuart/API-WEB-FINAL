@@ -1,20 +1,19 @@
-const Employee = require("../models/Employee")
-
+const Employee = require("../models/Employee");
 
 exports.create = async (req, res) => {
     try {
-        const { nome, treinamento, descricao, redes_sociais } = req.body;
+        const { name, training, description, social_media } = req.body;
 
-        const funcionario = new Employee({
-            nome,
-            treinamento,
-            descricao,
-            redes_sociais,
+        const employee = new Employee({
+            name,
+            training,
+            description,
+            social_media,
         });
 
-        await funcionario.save();
+        await employee.save();
 
-        res.json({ funcionario, msg: "Funcionário salvo com sucesso" });
+        res.json({ employee, msg: "Funcionário salvo com sucesso" });
     } catch (error) {
         res.status(500).json({ msg: "Erro ao salvar funcionário" });
     }
@@ -22,9 +21,9 @@ exports.create = async (req, res) => {
 
 exports.remove = async (req, res) => {
     try {
-        const funcionario = await Employee.findByIdAndDelete(req.params.id);
+        const employee = await Employee.findByIdAndDelete(req.params.id);
 
-        if (!funcionario) {
+        if (!employee) {
             return res.status(404).json({ msg: "Funcionário não encontrado" });
         }
 
@@ -34,20 +33,19 @@ exports.remove = async (req, res) => {
     }
 };
 
-
 exports.findAll = async (req, res) => {
     try {
         const { id } = req.params;
 
         if (id) {
-            const funcionario = await Employee.findById(id);
-            if (!funcionario) {
+            const employee = await Employee.findById(id);
+            if (!employee) {
                 return res.status(404).send({ msg: 'Funcionário não encontrado.' });
             }
-            return res.send(funcionario);
+            return res.send(employee);
         } else {
-            const funcionarios = await Employee.find();
-            return res.send(funcionarios);
+            const employees = await Employee.find();
+            return res.send(employees);
         }
     } catch (error) {
         console.error(error);
@@ -57,26 +55,30 @@ exports.findAll = async (req, res) => {
 
 exports.update = async (req, res) => {
     try {
-        const { nome, treinamento, descricao, redes_sociais } = req.body;
+        const { name, training, description, social_media } = req.body;
 
-        const funcionario = await Employee.findById(req.params.id);
-        if (!funcionario) {
-            return res.status(404).json({ error: 'Funcionário não encontrado.' });
+        const employee = await Employee.findById(req.params.id);
+        if (!employee) {
+            return res.status(404).send({ msg: 'Funcionário não encontrado.' });
         }
 
-        // Atualize os dados do funcionário
-        funcionario.nome = nome;
-        funcionario.treinamento = treinamento;
-        funcionario.descricao = descricao;
-        funcionario.redes_sociais = redes_sociais;
+        try {
+            // Atualize os dados do funcionário
+            employee.name = name;
+            employee.training = training;
+            employee.description = description;
+            employee.social_media = social_media;
 
-        // Salve as alterações
-        await funcionario.save();
+            // Salve as alterações
+            await employee.save();
 
-        return res.json({ msg: 'Funcionário atualizado com sucesso.', funcionario });
+            return res.send({ msg: 'Funcionário atualizado com sucesso.', employee });
+        } catch (error) {
+            console.error(error);
+            return res.status(500).send({ msg: 'Erro ao atualizar o funcionário.' });
+        }
     } catch (error) {
         console.error(error);
-        return res.status(500).json({ error: 'Erro ao atualizar o funcionário.' });
+        return res.status(500).send({ msg: 'Erro ao atualizar o funcionário.' });
     }
 };
-
