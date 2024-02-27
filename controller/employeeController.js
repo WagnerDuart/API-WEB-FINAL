@@ -61,26 +61,22 @@ exports.update = async (req, res) => {
 
         const funcionario = await Employee.findById(req.params.id);
         if (!funcionario) {
-            return res.status(404).send({ msg: 'Funcionário não encontrado.' });
+            return res.status(404).json({ error: 'Funcionário não encontrado.' });
         }
 
-        try {
-            // Atualize os dados do funcionário
-            funcionario.nome = nome;
-            funcionario.treinamento = treinamento;
-            funcionario.descricao = descricao;
-            funcionario.redes_sociais = redes_sociais;
+        // Atualize os dados do funcionário
+        funcionario.nome = nome;
+        funcionario.treinamento = treinamento;
+        funcionario.descricao = descricao;
+        funcionario.redes_sociais = redes_sociais;
 
-            // Salve as alterações
-            await funcionario.save();
+        // Salve as alterações
+        await funcionario.save();
 
-            return res.send({ msg: 'Funcionário atualizado com sucesso.', funcionario });
-        } catch (error) {
-            console.error(error);
-            return res.status(500).send({ msg: 'Erro ao atualizar o funcionário.' });
-        }
+        return res.json({ msg: 'Funcionário atualizado com sucesso.', funcionario });
     } catch (error) {
         console.error(error);
-        return res.status(500).send({ msg: 'Erro ao atualizar o funcionário.' });
+        return res.status(500).json({ error: 'Erro ao atualizar o funcionário.' });
     }
 };
+
