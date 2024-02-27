@@ -9,7 +9,7 @@ exports.create = async (req, res) =>{
 
         const employee = new Employee({
             name,
-            image_src: file.path,
+            image_src,
             training,
             description,
             social_media,
