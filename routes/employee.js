@@ -8,6 +8,6 @@ const EmployeeController = require("../controller/employeeController")
 router.post("/", upload.single("file"), EmployeeController.create)
 router.get("/:id?", EmployeeController.findAll);
 router.delete("/:id", EmployeeController.remove)
-router.put("/:id", upload.single("file"), EmployeeController.update)
+router.put("/:id", EmployeeController.update)
 
 module.exports = router;
